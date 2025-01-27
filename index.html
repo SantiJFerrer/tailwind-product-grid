@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Sellers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 p-8">
+
+    <!-- Contenedor principal -->
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Best Sellers</h1>
+
+        <!-- Contenedor con barra desplazadora en computadora -->
+        <div class="hidden lg:block overflow-x-auto">
+            <div id="product-grid" class="flex space-x-4 w-max">
+                <!-- Las tarjetas de producto se generarán aquí mediante JS -->
+            </div>
+        </div>
+
+        <!-- Contenedor estándar para móviles y tablets -->
+        <div id="product-grid-mobile" class="lg:hidden grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4">
+            <!-- Las tarjetas de producto para móvil se generarán aquí mediante JS -->
+        </div>
+
+        <!-- Botón para mostrar más productos solo en dispositivos móviles y tablets -->
+        <div class="text-center mt-6 sm:text-center lg:hidden">
+            <button id="show-more-btn" class="bg-blue-500 text-white px-6 py-2 rounded shadow-md hover:bg-blue-700 transition hidden">
+                Mostrar más
+            </button>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Datos de los productos
+        const products = [
+            { id: 1, name: "Producto 1", price: "$99.00", img: "assets/product1/product1.webp", hoverImg: "assets/product1/product1hover.jpg", badge: "NEW" },
+            { id: 2, name: "Producto 2", price: "$99.00", img: "assets/product2/product2.avif", hoverImg: "assets/product2/product2hover.jpg", badge: "SALE" },
+            { id: 3, name: "Producto 3", price: "$99.00", img: "assets/product3/product3.avif", hoverImg: "assets/product3/product3hover.avif", badge: "" },
+            { id: 4, name: "Producto 4", price: "$99.00", img: "assets/product4/product4.avif", hoverImg: "assets/product4/product4hover.avif", badge: "SALE" },
+            { id: 5, name: "Producto 5", price: "$99.00", img: "assets/product5/product5.avif", hoverImg: "assets/product5/product5hover.avif", badge: "NEW" },
+            { id: 6, name: "Producto 6", price: "$99.00", img: "assets/product6/product6.avif", hoverImg: "assets/product6/product6hover.avif", badge: "" },
+            { id: 7, name: "Producto 7", price: "$99.00", img: "assets/product7/product7.avif", hoverImg: "assets/product7/product7hover.avif", badge: "SALE" },
+            { id: 8, name: "Producto 8", price: "$99.00", img: "assets/product8/product8.avif", hoverImg: "assets/product8/product8hover.avif", badge: "" },
+            { id: 9, name: "Producto 9", price: "$99.00", img: "assets/product9/product9.avif", hoverImg: "assets/product9/product9hover.avif", badge: "NEW" },
+            { id: 10, name: "Producto 10", price: "$99.00", img: "assets/product10/product10.avif", hoverImg: "assets/product10/product10hover.avif", badge: "SALE" }
+        ];
+
+        const gridDesktop = document.getElementById('product-grid');
+        const gridMobile = document.getElementById('product-grid-mobile');
+        const showMoreBtn = document.getElementById('show-more-btn');
+
+        function renderProducts() {
+            gridDesktop.innerHTML = "";
+            gridMobile.innerHTML = "";
+
+            let desktopContent = '';
+            let mobileContent = '';
+
+            products.forEach((product, index) => {
+                const productHTML = `
+                    <div class="relative bg-white p-4 rounded-lg shadow-lg">
+                        <div class="relative overflow-hidden rounded-md aspect-square group">
+                            ${product.badge ? `<span class="absolute top-2 left-2 bg-${product.badge === 'SALE' ? 'red' : 'green'}-500 text-white text-xs font-bold px-2 py-1 rounded z-10">${product.badge}</span>` : ''}
+                            <img src="${product.img}" alt="${product.name}" class="w-full sm:w-64 md:w-72 lg:w-48 xl:w-96 aspect-square object-cover rounded-md group-hover:opacity-0 transition-opacity duration-500 ease-in-out">
+                            <img src="${product.hoverImg}" alt="${product.name}" class="w-full sm:w-64 md:w-72 lg:w-48 xl:w-96 aspect-square object-cover rounded-md absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
+                        </div>
+                        <h2 class="text-lg font-semibold text-gray-700 mt-4">${product.name}</h2>
+                        <div class="text-yellow-400 mt-2 flex">
+                            <span>★★★★★</span>
+                        </div>
+                        <p class="text-gray-600 mt-2">${product.price}</p>
+                    </div>
+                `;
+
+                desktopContent += productHTML;
+                mobileContent += index < 4 ? productHTML : `<div class="hidden mobile-item">${productHTML}</div>`;
+            });
+
+            gridDesktop.innerHTML = desktopContent;
+            gridMobile.innerHTML = mobileContent;
+
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+                showMoreBtn.classList.remove('hidden');
+            } else {
+                showMoreBtn.classList.add('hidden');
+            }
+        }
+
+renderProducts();
+
+        showMoreBtn.addEventListener('click', () => {
+            document.querySelectorAll('.mobile-item').forEach(item => item.classList.remove('hidden'));
+            showMoreBtn.classList.add('hidden');
+        });
+
+        function debounce(func, delay) {
+            let timer;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        window.addEventListener('resize', debounce(renderProducts, 300));
+    </script>
+</body>
+</html>
+
+

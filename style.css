@@ -1,0 +1,21 @@
+
+
+/* Estilos base para la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px; /* Grosor inicial */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color de la barra */
+    border-radius: 4px;
+}
+
+/* Cambia el grosor al pasar el mouse sobre el contenedor */
+.overflow-x-auto:hover::-webkit-scrollbar {
+    height: 8px;
+}
+
+.overflow-x-auto:hover::-webkit-scrollbar-thumb {
+    background-color: #555; /* Color al pasar el mouse */
+}
