@@ -5,49 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Best Sellers</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom scrollbar styling FOR DESKTOP ONLY */
+        @media (min-width: 1024px) {
+            .desktop-scroll-container::-webkit-scrollbar {
+                height: 4px; /* Default track height */
+                background-color: #e5e7eb; /* Track color */
+            }
+
+            .desktop-scroll-container::-webkit-scrollbar-thumb {
+                background-color: #6b7280; /* Thumb color */
+                border-radius: 2px;
+            }
+
+            /* Increase thumb height on hover */
+            .desktop-scroll-container:hover::-webkit-scrollbar {
+                height: 6px; /* Hover track height */
+            }
+
+            .desktop-scroll-container:hover::-webkit-scrollbar-thumb {
+                background-color: #6b7280;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-100 p-8">
-
-    <!-- Contenedor principal -->
     <div class="max-w-7xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Best Sellers</h1>
 
-        <!-- Contenedor con barra desplazadora en computadora -->
-        <div class="hidden lg:block overflow-x-auto">
-            <div id="product-grid" class="flex space-x-4 w-max">
-                <!-- Las tarjetas de producto se generarán aquí mediante JS -->
+        <!-- Desktop scroll container -->
+        <div class="hidden lg:block overflow-x-auto desktop-scroll-container">
+            <div id="product-grid" class="flex space-x-4 w-max pb-2"> <!-- Added padding-bottom -->
+                <!-- Product cards -->
             </div>
         </div>
 
-        <!-- Contenedor estándar para móviles y tablets -->
+        <!-- Mobile container -->
         <div id="product-grid-mobile" class="lg:hidden grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4">
-            <!-- Las tarjetas de producto para móvil se generarán aquí mediante JS -->
+            <!-- Mobile product cards -->
         </div>
 
-        <!-- Botón para mostrar más productos solo en dispositivos móviles y tablets -->
+        <!-- Show more button -->
         <div class="text-center mt-6 sm:text-center lg:hidden">
             <button id="show-more-btn" class="bg-blue-500 text-white px-6 py-2 rounded shadow-md hover:bg-blue-700 transition hidden">
                 Mostrar más
             </button>
-
         </div>
-
     </div>
-
     <script>
         // Datos de los productos
         const products = [
-            { id: 1, name: "Producto 1", price: "$99.00", img: "assets/product1/product1.webp", hoverImg: "assets/product1/product1hover.jpg", badge: "NEW" },
-            { id: 2, name: "Producto 2", price: "$99.00", img: "assets/product2/product2.avif", hoverImg: "assets/product2/product2hover.jpg", badge: "SALE" },
-            { id: 3, name: "Producto 3", price: "$99.00", img: "assets/product3/product3.avif", hoverImg: "assets/product3/product3hover.avif", badge: "" },
-            { id: 4, name: "Producto 4", price: "$99.00", img: "assets/product4/product4.avif", hoverImg: "assets/product4/product4hover.avif", badge: "SALE" },
-            { id: 5, name: "Producto 5", price: "$99.00", img: "assets/product5/product5.avif", hoverImg: "assets/product5/product5hover.avif", badge: "NEW" },
-            { id: 6, name: "Producto 6", price: "$99.00", img: "assets/product6/product6.avif", hoverImg: "assets/product6/product6hover.avif", badge: "" },
-            { id: 7, name: "Producto 7", price: "$99.00", img: "assets/product7/product7.avif", hoverImg: "assets/product7/product7hover.avif", badge: "SALE" },
-            { id: 8, name: "Producto 8", price: "$99.00", img: "assets/product8/product8.avif", hoverImg: "assets/product8/product8hover.avif", badge: "" },
-            { id: 9, name: "Producto 9", price: "$99.00", img: "assets/product9/product9.avif", hoverImg: "assets/product9/product9hover.avif", badge: "NEW" },
-            { id: 10, name: "Producto 10", price: "$99.00", img: "assets/product10/product10.avif", hoverImg: "assets/product10/product10hover.avif", badge: "SALE" }
+            { id: 1, name: "Producto 1", price: "$99.00", img: "https://plus.unsplash.com/premium_photo-1679513691485-711d030f7e94?q=80&w=813&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", hoverImg: "https://plus.unsplash.com/premium_photo-1679513691474-73102089c117?q=80&w=813&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", badge: "NEW" },
+            { id: 2, name: "Producto 2", price: "$99.00", img: "https://plus.unsplash.com/premium_photo-1680346529160-549ad950bd1f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEzfHx8ZW58MHx8fHx8", hoverImg: "https://plus.unsplash.com/premium_photo-1680346529370-c940bd7536ad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0fHx8ZW58MHx8fHx8", badge: "SALE" },
+            { id: 3, name: "Producto 3", price: "$99.00", img: "https://plus.unsplash.com/premium_photo-1679864782395-cc5697bf614f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE1fHx8ZW58MHx8fHx8", hoverImg: "https://plus.unsplash.com/premium_photo-1679864782376-bdbbb87d9027?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIxfHx8ZW58MHx8fHx8", badge: "" },
+            { id: 4, name: "Producto 4", price: "$99.00", img: "https://plus.unsplash.com/premium_photo-1680346528556-f9598cf64bb1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDg3fHx8ZW58MHx8fHx8", hoverImg: "https://plus.unsplash.com/premium_photo-1680346528574-7cbc6c201c98?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDg4fHx8ZW58MHx8fHx8", badge: "SALE" },
+            { id: 5, name: "Producto 5", price: "$99.00", img: "https://plus.unsplash.com/premium_photo-1678099940967-73fe30680949?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", hoverImg: "https://plus.unsplash.com/premium_photo-1678102269732-d17de875ec3c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D", badge: "NEW" },
+            { id: 6, name: "Producto 6", price: "$99.00", img: "https://plus.unsplash.com/premium_photo-1678066730766-a27dd4fb02a8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fHw%3D", hoverImg: "https://plus.unsplash.com/premium_photo-1678066730788-fdc6d64b4679?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDd8fHxlbnwwfHx8fHw%3D", badge: "" },
+            { id: 7, name: "Producto 7", price: "$99.00", img: "https://images.unsplash.com/photo-1505740106531-4243f3831c78?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D", hoverImg: "https://images.unsplash.com/photo-1505751171710-1f6d0ace5a85?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fHw%3D", badge: "SALE" },
+            { id: 8, name: "Producto 8", price: "$99.00", img: "https://images.unsplash.com/photo-1711397996179-bd4bd28c78e6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIxfHx8ZW58MHx8fHx8", hoverImg: "https://images.unsplash.com/photo-1711397996070-f3fd14f6b139?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIyfHx8ZW58MHx8fHx8", badge: "" },
+            { id: 9, name: "Producto 9", price: "$99.00", img: "https://images.unsplash.com/photo-1548378329-437e1ef34263?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D", hoverImg: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fHw%3D", badge: "NEW" },
+            { id: 10, name: "Producto 10", price: "$99.00", img: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDZ8fHxlbnwwfHx8fHw%3D", hoverImg: "https://images.unsplash.com/photo-1549206464-82c129240d11?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D", badge: "SALE" }
         ];
 
         const gridDesktop = document.getElementById('product-grid');
@@ -66,8 +83,8 @@
                     <div class="relative bg-white p-4 rounded-lg shadow-lg">
                         <div class="relative overflow-hidden rounded-md aspect-square group">
                             ${product.badge ? `<span class="absolute top-2 left-2 bg-${product.badge === 'SALE' ? 'red' : 'green'}-500 text-white text-xs font-bold px-2 py-1 rounded z-10">${product.badge}</span>` : ''}
-                            <img src="${product.img}" alt="${product.name}" class="w-full sm:w-64 md:w-72 lg:w-48 xl:w-96 aspect-square object-cover rounded-md group-hover:opacity-0 transition-opacity duration-500 ease-in-out">
-                            <img src="${product.hoverImg}" alt="${product.name}" class="w-full sm:w-64 md:w-72 lg:w-48 xl:w-96 aspect-square object-cover rounded-md absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
+                            <img src="${product.img}" alt="${product.name}" class="w-full sm:w-64 md:w-full lg:w-48 xl:w-96 aspect-square object-cover rounded-md group-hover:opacity-0 transition-opacity duration-500 ease-in-out">
+                            <img src="${product.hoverImg}" alt="${product.name}" class="w-full sm:w-64 md:w-full lg:w-48 xl:w-96 aspect-square object-cover rounded-md absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
                         </div>
                         <h2 class="text-lg font-semibold text-gray-700 mt-4">${product.name}</h2>
                         <div class="text-yellow-400 mt-2 flex">
@@ -91,7 +108,7 @@
             }
         }
 
-renderProducts();
+        renderProducts();
 
         showMoreBtn.addEventListener('click', () => {
             document.querySelectorAll('.mobile-item').forEach(item => item.classList.remove('hidden'));
@@ -110,5 +127,4 @@ renderProducts();
     </script>
 </body>
 </html>
-
 
