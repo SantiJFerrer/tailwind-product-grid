@@ -53,6 +53,15 @@
         </div>
     </div>
     <script>
+        /**
+         * @typedef {Object} Product
+         * @property {number} id - Unique product identifier
+         * @property {string} name - Product display name
+         * @property {string} price - Formatted price string
+         * @property {string} img - Main product image URL
+         * @property {string} hoverImg - Hover state image URL
+         * @property {string} badge - Badge type ('NEW', 'SALE', or empty)
+         */
         // Datos de los productos
         const products = [
             { id: 1, name: "Producto 1", price: "$99.00", img: "https://plus.unsplash.com/premium_photo-1679513691485-711d030f7e94?q=80&w=813&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", hoverImg: "https://plus.unsplash.com/premium_photo-1679513691474-73102089c117?q=80&w=813&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", badge: "NEW" },
@@ -70,6 +79,12 @@
         const gridDesktop = document.getElementById('product-grid');
         const gridMobile = document.getElementById('product-grid-mobile');
         const showMoreBtn = document.getElementById('show-more-btn');
+
+        /**
+         * Renders products in both desktop and mobile layouts.
+         * Manages initial visibility of mobile items and show more button state.
+         * @function
+         */
 
         function renderProducts() {
             gridDesktop.innerHTML = "";
@@ -114,6 +129,14 @@
             document.querySelectorAll('.mobile-item').forEach(item => item.classList.remove('hidden'));
             showMoreBtn.classList.add('hidden');
         });
+
+        /**
+         * Creates a debounced function that delays execution until after wait milliseconds
+         * @function
+         * @param {Function} func - The function to debounce
+         * @param {number} delay - Number of milliseconds to delay
+         * @returns {Function} Debounced version of the input function
+         */
 
         function debounce(func, delay) {
             let timer;
